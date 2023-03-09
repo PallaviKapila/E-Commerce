@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"E-Commerce Project/database"
+	"github.com/PallaviKapila/E-Commerce-Project/database"
 
 	"github.com/go-playground/validator/v10"
 	//to hash our password

@@ -1,4 +1,4 @@
-module github.com/PallaviKapila/E-Commerce
+module github.com/PallaviKapila/E-Commerce-Project
 
 go 1.20
 

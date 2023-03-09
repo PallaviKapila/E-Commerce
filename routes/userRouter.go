@@ -1,8 +1,8 @@
 package routes
 
 import (
-	controller "E-Commerce Project/controllers"
-	"E-Commerce Project/middleware"
+	controller "github.com/PallaviKapila/E-Commerce-Project/controllers"
+	"github.com/PallaviKapila/E-Commerce-Project/middleware"
 
 	"githib.com/gin-gonic/gin"
 )

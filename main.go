@@ -3,8 +3,9 @@ package main
 
 import (
 	//where this routes come from
-	routes "E-Commerce Project/routes"
 	"os"
+
+	routes "github.com/PallaviKapila/E-Commerce-Project/routes"
 
 	"github.com/gin-gonic/gin"
 )
