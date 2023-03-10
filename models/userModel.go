@@ -8,10 +8,10 @@ import (
 )
 
 // this customerModel acts as a middle layer b/w our golang program and any other database
-// database understands json and golang doesn't understand json
+// database understands jso n and golang doesn't understand json
 // we need a layer that converts things from json to golang and golang to json
 // that's how we have struct here
-type Customer struct {
+type User struct {
 	ID             primitive.ObjectID `bson:"_id`
 	First_Name     *string            `json:"first_name" validate:"required, min=2, max=100"`
 	Last_Name      *string            `json:"last_name" validate:"required,min=2, max=100"`
