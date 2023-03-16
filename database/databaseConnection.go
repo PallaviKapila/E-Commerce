@@ -3,12 +3,11 @@ package database
 import (
 	"context"
 	"fmt"
-	"go/mongodb.org/mongo-driver/mongo/options"
 	"log" //to logout errors
 	"os"
 	"time"
 
-	"golang.org/x/vuln/client"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"github.com/joho/godotenv" //to work with enviornment variables
 	"go.mongodb.org/mongo-driver/mongo"
@@ -25,7 +24,7 @@ func DBinstance() *mongo.Client {
 	//os package to get the enviornment for MongoDb
 	MongoDb := os.Getenv("MONGODB_URL")
 	//here we'll pass the mongodb variable that we created and we'll capture this in variable client & cspture the error as well
-	mongo.NewClient(options.Client().ApplyURI(MongoDb))
+	client, err := mongo.NewClient(options.Client().ApplyURI(MongoDb))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -45,14 +44,14 @@ func DBinstance() *mongo.Client {
 }
 
 // we call this function which runs mongo client which we have captured in this variable client which is of the type mongo client
-var Client *mongo.client = DBinstance()
+var Client *mongo.Client = DBinstance()
 
 // to access particular collection in database
 // we can pass a particular collection here and then we can use it
 // this function returns a particular collection
-func OpenCollection(client *mongo.Client, collectionName string) *mongo.collection {
+func OpenCollection(client *mongo.Client, collectionName string) *mongo.Collection {
 	//we define a variable collection which is of type mongo.Collection it's a client.Database and we can define the database here and we can define the name of the collection
-	var collection *mongo.collection = client.Database("").Collection(collectionName)
+	var collection *mongo.Collection = client.Database("").Collection(collectionName)
 	//we'll return the collection here
 	return collection
 	//so this database can be the database that we get a fully managed database in a mongodb instance in the cloud o the database that we'll get would be mostly like cluster-0 or cluster-1

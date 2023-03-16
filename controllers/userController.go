@@ -40,7 +40,7 @@ func HashPassword(password string) string {
 func VerifyPassword(userPassword string, providedPassword string) (bool, string) {
 	//we'll have one defition and we'll use bcrypt library to comapre hash and password
 	//this function takes the provided password and also takes the other password, and compare both of them
-	err := bcrypt.CompareHashAndPaasword([]byte(providedPassword), []byte(userPassword))
+	err := bcrypt.CompareHashAndPassword([]byte(providedPassword), []byte(userPassword))
 	check := true
 	msg := ""
 
@@ -82,7 +82,7 @@ func Signup() gin.HandlerFunc {
 		password := HashPassword(*user.Password)
 		user.Password = &password
 
-		count, err := userCollection.CountDocuments(ctx, bson.M{"phone": user.Phone})
+		count, err = userCollection.CountDocuments(ctx, bson.M{"phone": user.Phone})
 		defer cancel()
 
 		if err != nil {
@@ -97,9 +97,9 @@ func Signup() gin.HandlerFunc {
 		user.Updated_at, _ = time.Parse(time.RFC1123, time.Now().Format(time.RFC1123))
 		//we worked on user id
 		user.ID = primitive.NewObjectID()
-		user.User_id = user.Id.Hex()
+		user.User_id = user.ID.Hex()
 		//we want token, we are sending it to GenerateAllTokens function, this user_id is same that we created here
-		token, refereshToken, _ := helper.GenerateAllTokens(*user.Email, *user.First_name, *user.Last_name, *user.User_type, *&user.User_id)
+		token, refereshToken, _ := helper.GenerateAllTokens(*user.Email, *user.First_Name, *user.Last_Name, *user.User_type, *&user.User_id)
 		//here we have to set user.Token with token that i receive here
 		user.Token = &token
 		user.Refresh_token = &refereshToken
@@ -143,7 +143,7 @@ func Login() gin.HandlerFunc {
 		//the user that is trying to login has sent his email and password to us, using that email we find that user and we store that in foundUser
 		//then we use the user's password and found users's password to send it to a function verify password to check
 		//if they're both matching
-		passwordIsValid, msg := VerifyPassword(*user.Password, *&foundUser.Password)
+		passwordIsValid, msg := VerifyPassword(*user.Password, *foundUser.Password)
 		defer cancel()
 		if passwordIsValid != true {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": msg})
@@ -154,7 +154,7 @@ func Login() gin.HandlerFunc {
 		if foundUser.Email == nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "User Not found"})
 		}
-		token, refreshToken, _ := helper.GenerateAllTokens(*foundUser.Email, *foundUser.First_name, *foundUser.Last_name, *foundUser.User_type, *foundUser.User_id)
+		token, refreshToken, _ := helper.GenerateAllTokens(*foundUser.Email, *foundUser.First_Name, *foundUser.Last_Name, *foundUser.User_type, foundUser.User_id)
 		helper.UpdateAllTokens(token, refreshToken, foundUser.User_id)
 		//we'll use decode function and then we'll use foundUser to structure it
 		err = userCollection.FindOne(ctx, bson.M{"user_id": foundUser.User_id}).Decode(&foundUser)
@@ -178,7 +178,7 @@ func GetUsers() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
 		}
-		var ctx, cancel = context.WithTimeout(context.Background())
+		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 
 		recordPerPage, err := strconv.Atoi(c.Query("recordPerPage"))
 		if err != nil || recordPerPage < 1 {

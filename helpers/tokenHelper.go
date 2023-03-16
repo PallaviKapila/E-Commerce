@@ -67,7 +67,7 @@ func GenerateAllTokens(email string, firstName string, lastName string, userType
 
 // everytime we login we'll get a new token and refresh_token
 func UpdateAllTokens(signedToken string, signedRefreshToken string, userId string) {
-	var ctx, cancel = context.WithTimeOut(context.Background(), 100*time.Second)
+	var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
 
 	//we'll append our token and refresh token to this update object
 	var updateObj primitive.D

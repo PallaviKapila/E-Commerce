@@ -1,5 +1,5 @@
 // we'll call this package so that we can easily call this in our main.go file
-package model
+package models
 
 import (
 	"time"
@@ -12,16 +12,16 @@ import (
 // we need a layer that converts things from json to golang and golang to json
 // that's how we have struct here
 type User struct {
-	ID             primitive.ObjectID `bson:"_id`
-	First_Name     *string            `json:"first_name" validate:"required, min=2, max=100"`
-	Last_Name      *string            `json:"last_name" validate:"required,min=2, max=100"`
-	Password       *string            `json:"password" validate:"required, min=6"`
-	Email          *string            `json:"email" validate:"email, required"`
-	Phone          *string            `json:"phone" validate:"required"`
-	Token          *string            `json:"token"`
-	User_type      *string            `json:"user_type" validate:"required, eq=ADMIN|eq=USER"` //enum concept
-	Referesh_token *string            `json:"referesh_token`
-	Created_at     time.Time          `json:"created_at"`
-	Updated_at     time.Time          `json:"updated_at"`
-	User_id        string             `json:"user_id"`
+	ID            primitive.ObjectID `bson:"_id`
+	First_Name    *string            `json:"first_name" validate:"required, min=2, max=100"`
+	Last_Name     *string            `json:"last_name" validate:"required,min=2, max=100"`
+	Password      *string            `json:"password" validate:"required, min=6"`
+	Email         *string            `json:"email" validate:"email, required"`
+	Phone         *string            `json:"phone" validate:"required"`
+	Token         *string            `json:"token"`
+	User_type     *string            `json:"user_type" validate:"required, eq=ADMIN|eq=USER"` //enum concept
+	Refresh_token *string            `json:"referesh_token`
+	Created_at    time.Time          `json:"created_at"`
+	Updated_at    time.Time          `json:"updated_at"`
+	User_id       string             `json:"user_id"`
 }

@@ -4,7 +4,7 @@ import (
 	controller "github.com/PallaviKapila/E-Commerce-Project/controllers"
 	"github.com/PallaviKapila/E-Commerce-Project/middleware"
 
-	"githib.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 )
 
 func UserRoutes(incomingRoutes *gin.Engine) {
