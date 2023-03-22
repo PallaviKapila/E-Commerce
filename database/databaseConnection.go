@@ -51,7 +51,7 @@ var Client *mongo.Client = DBinstance()
 // this function returns a particular collection
 func OpenCollection(client *mongo.Client, collectionName string) *mongo.Collection {
 	//we define a variable collection which is of type mongo.Collection it's a client.Database and we can define the database here and we can define the name of the collection
-	var collection *mongo.Collection = client.Database("").Collection(collectionName)
+	var collection *mongo.Collection = client.Database("authentication").Collection(collectionName)
 	//we'll return the collection here
 	return collection
 	//so this database can be the database that we get a fully managed database in a mongodb instance in the cloud o the database that we'll get would be mostly like cluster-0 or cluster-1

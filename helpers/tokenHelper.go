@@ -32,7 +32,7 @@ var userCollection *mongo.Collection = database.OpenCollection(database.Client, 
 
 var SECRET_KEY string = os.Getenv("SECRET_KEY")
 
-func GenerateAllTokens(email string, firstName string, lastName string, userType string, uid string) (signedTokens string, signedRefreshToken string, err error) {
+func GenerateAllTokens(email string, firstName string, lastName string, userType string, uid string) (signedToken string, signedRefreshToken string, err error) {
 	claims := &SignedDetails{
 		//this small email is what we receive inside this function and Email is part of signed details which we have to complete
 		Email:      email,
@@ -53,7 +53,7 @@ func GenerateAllTokens(email string, firstName string, lastName string, userType
 	}
 
 	//SigningMethodHS256 algorithmn to create encrypted token for you
-	token, err := jwt.NewWithClaims(jwt.SigningMethodES256, claims).SignedString([]byte(SECRET_KEY))
+	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(SECRET_KEY))
 	refreshToken, err := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims).SignedString([]byte(SECRET_KEY))
 
 	//let's handle the token
@@ -113,7 +113,7 @@ func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
 		&SignedDetails{},
 		//function that takes in the token and returns interface and an error and ths returns
 		func(token *jwt.Token) (interface{}, error) {
-			return []byte(SECRET_KEY), bson.ErrDecodeToNil
+			return []byte(SECRET_KEY), nil
 		},
 	)
 

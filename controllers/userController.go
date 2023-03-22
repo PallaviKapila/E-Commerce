@@ -87,7 +87,7 @@ func Signup() gin.HandlerFunc {
 
 		if err != nil {
 			log.Panic(err)
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error occured while cjecking for phone number"})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error occured while checking for phone number"})
 		}
 
 		if count > 0 {
@@ -175,7 +175,7 @@ func GetUsers() gin.HandlerFunc {
 		//in authHelper we already have this function
 		//we're just checking if user is ADMIN
 		if err := helper.CheckUserType(c, "ADMIN"); err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.JSON(http.StatusBadRequest, gin.H{"error_help": err.Error()})
 			return
 		}
 		var ctx, cancel = context.WithTimeout(context.Background(), 100*time.Second)
@@ -211,7 +211,8 @@ func GetUsers() gin.HandlerFunc {
 			{"$project", bson.D{
 				{"_id", 0},
 				{"total_count", 1},
-				{"user_items", bson.D{{"$slice", []interface{}{"$data", startIndex, recordPerPage}}}}}}}
+				{"user_items", bson.D{{"$slice", []interface{}{"$data", startIndex, recordPerPage}}}},
+			}}}
 		result, err := userCollection.Aggregate(ctx, mongo.Pipeline{
 			matchStage, groupStage, projectStage})
 
@@ -234,7 +235,7 @@ func GetUsers() gin.HandlerFunc {
 func GetUser() gin.HandlerFunc {
 	//
 	return func(c *gin.Context) {
-		userId := c.Param("*user_id")
+		userId := c.Param("user_id")
 
 		//I'll call my helper file and have function MatchUserTypeToUid to check user is admin or not
 		if err := helper.MatchUserTypeToUid(c, userId); err != nil {

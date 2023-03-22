@@ -3,16 +3,21 @@ package main
 
 import (
 	//where this routes come from
+	"log"
 	"os"
 
 	routes "github.com/PallaviKapila/E-Commerce-Project/routes"
-
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv" //to work with enviornment variables
 )
 
 func main() {
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatal("Error loading the .env file")
+	}
 	//we'll have enviornment file so we'll get the enviornment
-	port = os.Getenv("PORT")
+	port := os.Getenv("PORT")
 
 	//if port is empty then atleast we need something
 	if port == "" {
